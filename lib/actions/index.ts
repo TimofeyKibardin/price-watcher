@@ -3,7 +3,7 @@
 import { User } from './../../types/index';
 import { revalidatePath } from "next/cache";
 import { connectToDB } from "../mongoose";
-import { scrapeAmazonProduct, scrapeOzonProduct } from "../scraper";
+import { scrapeAmazonProduct } from "../scraper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
 import Product from "../models/product.model";
 import { generateEmailBody, sendEmail } from '../nodemailer';
