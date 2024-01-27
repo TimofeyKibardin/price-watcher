@@ -1,5 +1,5 @@
 import HeroCarousel from "@/components/HeroCarousel"
-import Searchbar from "@/components/Searchbar"
+import Searchbar from "@/components/SearchBar"
 import Image from "next/image"
 import { getAllProducts } from "@/lib/actions"
 import ProductCard from "@/components/ProductCard"
