@@ -26,7 +26,7 @@ const Searchbar = () => {
   const [searchPrompt, setSearchPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-const handleSubmitAmazon = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const isValidLink = isValidAmazonProductURL(searchPrompt);
@@ -36,18 +36,19 @@ const handleSubmitAmazon = async (event: FormEvent<HTMLFormElement>) => {
     try {
       setIsLoading(true);
 
-      const product = await scrapeAndStoreProduct(searchPrompt, 'Amazon');
+      // Scrape the product page
+      const product = await scrapeAndStoreProduct(searchPrompt);
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
-}
+  }
 
   return (
     <form 
       className="flex flex-wrap gap-4 mt-12" 
-      onSubmit={handleSubmitAmazon}
+      onSubmit={handleSubmit}
     >
       <input 
         type="text"
