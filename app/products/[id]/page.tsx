@@ -44,7 +44,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 target="_blank"
                 className="text-base text-black opacity-50"
               >
-                Visit Product
+                Посмотреть товар
               </Link>
             </div>
 
@@ -120,8 +120,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               </div>
 
               <p className="text-sm text-black opacity-50">
-                <span className="text-primary-green font-semibold">93% </span> of
-                buyers have recommeded this.
+                <span className="text-primary-green font-semibold">93% </span> покупателей рекомендуют это
               </p>
             </div>
           </div>
@@ -158,7 +157,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
       <div className="flex flex-col gap-16">
         <div className="flex flex-col gap-5">
           <h3 className="text-2xl text-secondary font-semibold">
-            Product Description
+            Описание товара
           </h3>
 
           <div className="flex flex-col gap-4">
@@ -175,14 +174,14 @@ const ProductDetails = async ({ params: { id } }: Props) => {
           />
 
           <Link href="/" className="text-base text-white">
-            Buy Now
+            Вернуться
           </Link>
         </button>
       </div>
 
       {similarProducts && similarProducts?.length > 0 && (
         <div className="py-14 flex flex-col gap-2 w-full">
-          <p className="section-text">Similar Products</p>
+          <p className="section-text">Схожие предложения</p>
 
           <div className="flex flex-wrap gap-10 mt-7 w-full">
             {similarProducts.map((product) => (

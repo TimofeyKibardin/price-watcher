@@ -87,17 +87,17 @@ const Modal = ({ productId }: Props) => {
                   </div>
 
                   <h4 className="dialog-head_text">
-                    Stay updated with product pricing alerts right in your inbox!
+                    Будьте в курсе новостей о ценах на товары!
                   </h4>
 
                   <p className="text-sm text-gray-600 mt-2">
-                    Never miss a bargain again with our timely alerts!
+                    Не пропустите выгодную цену благодаря своевременным оповещениями!
                   </p>
                 </div>
 
                 <form className="flex flex-col mt-5" onSubmit={handleSubmit}>
                   <label htmlFor="email" className="text-sm font-medium text-gray-700">
-                    Email address
+                    Email адрес
                   </label>
                   <div className="dialog-input_container">
                     <Image 
