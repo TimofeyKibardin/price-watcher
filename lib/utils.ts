@@ -9,10 +9,15 @@ const Notification = {
 
 const THRESHOLD_PERCENTAGE = 40;
 
+export function percentage(partialValue: any, totalValue: any) {
+  return 100 - Number((100 * partialValue) / totalValue);
+} 
+
 // Extracts and returns the price from a list of possible elements.
 export function extractPrice(...elements: any) {
   for (const element of elements) {
-    const priceText = element.text().trim();
+    // const priceText = element.text().trim();
+    const priceText = element.trim();
 
     if(priceText) {
       const cleanPrice = priceText.replace(/[^\d.]/g, '');

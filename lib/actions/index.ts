@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import Product from "../models/product.model";
 import { connectToDB } from "../mongoose";
-import { scrapeAmazonProduct } from "../scraper";
+import { scrapeAmazonProduct, scrapeWildberriesProduct } from "../scraper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
 import { User } from "@/types";
 import { generateEmailBody, sendEmail } from "../nodemailer";
@@ -14,7 +14,7 @@ export async function scrapeAndStoreProduct(productUrl: string) {
   try {
     connectToDB();
 
-    const scrapedProduct = await scrapeAmazonProduct(productUrl);
+    const scrapedProduct = await scrapeWildberriesProduct(productUrl);
 
     if(!scrapedProduct) return;
 
@@ -31,9 +31,9 @@ export async function scrapeAndStoreProduct(productUrl: string) {
       product = {
         ...scrapedProduct,
         priceHistory: updatedPriceHistory,
-        lowestPrice: getLowestPrice(updatedPriceHistory),
-        highestPrice: getHighestPrice(updatedPriceHistory),
-        averagePrice: getAveragePrice(updatedPriceHistory),
+        // lowestPrice: getLowestPrice(updatedPriceHistory),
+        // highestPrice: getHighestPrice(updatedPriceHistory),
+        // averagePrice: getAveragePrice(updatedPriceHistory),
       }
     }
 
@@ -45,7 +45,7 @@ export async function scrapeAndStoreProduct(productUrl: string) {
 
     revalidatePath(`/products/${newProduct._id}`);
   } catch (error: any) {
-    throw new Error(`Failed to create/update product: ${error.message}`)
+    throw new Error(`Ошибка создания/обновления товара: ${error.message}`)
   }
 }
 

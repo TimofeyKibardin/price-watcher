@@ -6,7 +6,7 @@ import Product from "@/lib/models/product.model";
 import { scrapeAmazonProduct } from "@/lib/scraper";
 import { generateEmailBody, sendEmail } from "@/lib/nodemailer";
 
-export const maxDuration = 10; // This function can run for a maximum of 300 seconds
+export const maxDuration = 10; // Функция может работать максимум 10 секунд, ограничения тарифа
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -16,9 +16,9 @@ export async function GET(request: Request) {
 
     const products = await Product.find({});
 
-    if (!products) throw new Error("No product fetched");
+    if (!products) throw new Error("Не получили товар");
 
-    // ======================== 1 SCRAPE LATEST PRODUCT DETAILS & UPDATE DB
+    // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных новыми результатами
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
         // Scrape product
@@ -41,7 +41,7 @@ export async function GET(request: Request) {
           averagePrice: getAveragePrice(updatedPriceHistory),
         };
 
-        // Update Products in DB
+        // Обновлям товары в БД
         const updatedProduct = await Product.findOneAndUpdate(
           {
             url: product.url,
@@ -49,7 +49,7 @@ export async function GET(request: Request) {
           product
         );
 
-        // ======================== 2 CHECK EACH PRODUCT'S STATUS & SEND EMAIL ACCORDINGLY
+        // ======================== 2. Смотрим статус товаров и отправляем на почту оповещение если необходимо
         const emailNotifType = getEmailNotifType(
           scrapedProduct,
           currentProduct
@@ -60,11 +60,11 @@ export async function GET(request: Request) {
             title: updatedProduct.title,
             url: updatedProduct.url,
           };
-          // Construct emailContent
+          // Создаем содержимое сообщения
           const emailContent = await generateEmailBody(productInfo, emailNotifType);
-          // Get array of user emails
+          // Получаем массив пользователей для рассылки
           const userEmails = updatedProduct.users.map((user: any) => user.email);
-          // Send email notification
+          // Рассылаем email-оповещения
           await sendEmail(emailContent, userEmails);
         }
 
@@ -77,6 +77,6 @@ export async function GET(request: Request) {
       data: updatedProducts,
     });
   } catch (error: any) {
-    throw new Error(`Failed to get all products: ${error.message}`);
+    throw new Error(`Ошибка получения списка товаров: ${error.message}`);
   }
 }

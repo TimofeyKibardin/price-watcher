@@ -22,6 +22,23 @@ const isValidAmazonProductURL = (url: string) => {
   return false;
 }
 
+const isValidWildberriesProductURL = (url: string) => {
+  try {
+    const parsedURL = new URL(url);
+    const hostname = parsedURL.hostname;
+
+    if(
+      hostname.includes('wildberries.ru') || 
+      hostname.includes ('wildberries.') || 
+      hostname.endsWith('wildberries')
+    ) {
+      return true;
+    }
+  } catch (error) {
+    return false;
+  }
+}
+
 const Searchbar = () => {
   const [searchPrompt, setSearchPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -29,14 +46,14 @@ const Searchbar = () => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const isValidLink = isValidAmazonProductURL(searchPrompt);
+    const isValidLink = isValidWildberriesProductURL(searchPrompt);
 
-    if(!isValidLink) return alert('Предоставьте корректную ссылку на Amazon')
+    if(!isValidLink) return alert('Предоставьте корректную ссылку на Wildberries')
 
     try {
       setIsLoading(true);
 
-      // Scrape the product page
+      // Парсим товар
       const product = await scrapeAndStoreProduct(searchPrompt);
     } catch (error) {
       console.log(error);
