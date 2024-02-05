@@ -32,7 +32,7 @@ const Modal = ({ productId }: Props) => {
   return (
     <>
       <button type="button" className="btn" onClick={openModal}>
-        Track
+        Отслеживать
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
@@ -113,7 +113,7 @@ const Modal = ({ productId }: Props) => {
                       id="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email address"
+                      placeholder="Введите email"
                       className='dialog-input'
                     />
                   </div>
@@ -121,7 +121,7 @@ const Modal = ({ productId }: Props) => {
                   <button type="submit"
                     className="dialog-btn"
                   >
-                    {isSubmitting ? 'Submitting...' : 'Track'}
+                    {isSubmitting ? 'Отправляем...' : 'Отслеживать'}
                   </button>
                 </form>
               </div>
