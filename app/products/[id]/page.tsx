@@ -94,7 +94,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 
             <div className="flex flex-col gap-4">
               <div className="flex gap-3">
-                {/* <div className="product-stars">
+                <div className="product-stars">
                   <Image 
                     src="/assets/icons/star.svg"
                     alt="star"
@@ -104,7 +104,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                   <p className="text-sm text-primary-orange font-semibold">
                     {product.stars || '25'}
                   </p>
-                </div> */}
+                </div>
 
                 <div className="product-reviews">
                   <Image 
