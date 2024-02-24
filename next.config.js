@@ -5,7 +5,7 @@ const nextConfig = {
       serverComponentsExternalPackages: ['mongoose']
     },
     images: {
-      domains: ['m.media-amazon.com', "basket-12.wbbasket.ru", "basket-13.wbbasket.ru"]
+      domains: ['m.media-amazon.com', "basket-11.wbbasket.ru", "basket-12.wbbasket.ru", "basket-13.wbbasket.ru", "basket-14.wbbasket.ru"]
     }
   }
   
