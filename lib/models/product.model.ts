@@ -13,14 +13,15 @@ const productSchema = new mongoose.Schema({
       date: { type: Date, default: Date.now }
     },
   ],
-  lowestPrice: { type: Number },
   highestPrice: { type: Number },
+  lowestPrice: { type: Number },
   averagePrice: { type: Number },
-  discountRate: { type: Number },
+  discountRate: { type: String },
   description: { type: String },
   category: { type: String },
   reviewsCount: { type: Number },
   isOutOfStock: { type: Boolean, default: false },
+  stars: { type: String },
   users: [
     {email: { type: String, required: true}}
   ], default: [],
