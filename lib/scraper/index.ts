@@ -93,6 +93,22 @@ export async function scrapeWildberriesProduct(url: string) {
   const port = 9222;
   // const session_id = (1000000 * Math.random()) | 0;
   const SBR_WS_ENDPOINT = `wss://${username}:${password}@brd.superproxy.io:${port}`;
+//   var request = require('request-promise');
+//   var username = String(process.env.BRIGHT_DATA_USERNAME);
+//   var password = String(process.env.BRIGHT_DATA_PASSWORD);
+//   var port = 22225;
+//   var session_id = (1000000 * Math.random())|0;
+//   const proxy = `http://${username}:${password}@brd.superproxy.io:${port}`;
+//   var options = {
+//     auth: {
+//       username: `${username}-session-${session_id}`,
+//       password,
+//     },
+//     url: url,
+//     proxy: proxy,
+//     rejectUnauthorized: false
+// };
+  
 
   console.log('Connecting to Scraping Browser...');
     const browser = await puppeteer.connect({
@@ -100,11 +116,20 @@ export async function scrapeWildberriesProduct(url: string) {
     });
 
   try {
+    // request(options)
+    // .then(function(data: any){ console.log(data); },
+    //       function(err: any){ console.error(err); });
+
     const page = await browser.newPage();
     console.log('Connected! Navigating to ' + url + '...');
     await page.goto(url, {"waitUntil" : "networkidle0"});
+
+    const body = await page.waitForSelector('body');
+    console.log('Scraping <body> text...');
+    // const text = await body?.evaluate(b => b.innerText);
+    // console.log(text);
     
-    const allArticles = await page.evaluate(() => {
+    const allArticles: any = await body?.evaluate(() => {
       const articles = document.querySelectorAll('main');
 
       return Array.from(articles).map((article) => {
