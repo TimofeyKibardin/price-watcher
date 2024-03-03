@@ -31,9 +31,9 @@ export async function scrapeAndStoreProduct(productUrl: string) {
       product = {
         ...scrapedProduct,
         priceHistory: updatedPriceHistory,
-        // lowestPrice: getLowestPrice(updatedPriceHistory),
-        // highestPrice: getHighestPrice(updatedPriceHistory),
-        // averagePrice: getAveragePrice(updatedPriceHistory),
+        lowestPrice: getLowestPrice(updatedPriceHistory),
+        highestPrice: getHighestPrice(updatedPriceHistory),
+        averagePrice: getAveragePrice(updatedPriceHistory),
       }
     }
 
@@ -45,7 +45,7 @@ export async function scrapeAndStoreProduct(productUrl: string) {
 
     revalidatePath(`/products/${newProduct._id}`);
   } catch (error: any) {
-    throw new Error(`Ошибка создания/обновления товара: ${error.message}`)
+    throw new Error(`Ошибка создания/обновления продукта: ${error.message}`)
   }
 }
 
