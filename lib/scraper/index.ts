@@ -120,6 +120,7 @@ export async function scrapeWildberriesProduct(url: string) {
     // .then(function(data: any){ console.log(data); },
     //       function(err: any){ console.error(err); });
 
+    //Заходим на страницу
     const page = await browser.newPage();
     console.log('Connected! Navigating to ' + url + '...');
     await page.goto(url, {"waitUntil" : "networkidle0"});
