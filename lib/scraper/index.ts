@@ -83,7 +83,7 @@ export async function scrapeAmazonProduct(url: string) {
   }
 }
 
-export async function scrapeWildberriesProduct(url: string, context: any) {
+export async function scrapeWildberriesProduct(url: string, page: any) {
   if(!url) return;
   // const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
 
@@ -94,9 +94,9 @@ export async function scrapeWildberriesProduct(url: string, context: any) {
     // const defaultContext = browser.contexts()[0];
     // const page = defaultContext.pages()[0];
     // const context = await browser.newContext();
-    const page = context.newPage();
+    // const page = await context.newPage();
 
-    await page.goto(url, { timeout: 2 * 60 * 1000 });
+    await page.goto(url);
     await page.waitForSelector("h1");
     console.log('Перенаправились! Скрейпинг в процессе...');
 
