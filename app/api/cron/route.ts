@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getLowestPrice, getHighestPrice, getAveragePrice, getEmailNotifType } from "@/lib/utils";
 import { connectToDB } from "@/lib/mongoose";
+import pw from 'playwright';
 import Product from "@/lib/models/product.model";
 import { scrapeWildberriesProduct } from "@/lib/scraper";
 import { generateEmailBody, sendEmail } from "@/lib/nodemailer";
@@ -18,11 +19,15 @@ export async function GET(request: Request) {
 
     if (!products) throw new Error("Не получили товары");
 
+    //Открываем подключение к браузеру
+    // const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
+    console.log('Подключение к браузеру для скрейпинга...');
+    const browser = await pw.chromium.launch({ headless: true });
     // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
         //Получаем информацию по товарам
-        const scrapedProduct = await scrapeWildberriesProduct(currentProduct.url);
+        const scrapedProduct = await scrapeWildberriesProduct(currentProduct.url, browser);
 
         if (!scrapedProduct) return new Error("Товары не найдены");
 

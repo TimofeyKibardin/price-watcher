@@ -3,7 +3,6 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { extractCurrency, extractDescription, extractPrice, percentage } from '../utils';
-import puppeteer from 'puppeteer';
 
 export async function scrapeAmazonProduct(url: string) {
   if(!url) return;
@@ -84,72 +83,41 @@ export async function scrapeAmazonProduct(url: string) {
   }
 }
 
-export async function scrapeWildberriesProduct(url: string) {
+export async function scrapeWildberriesProduct(url: string, browser: any) {
   if(!url) return;
-
-  // BrightData proxy configuration
-  const username = String(process.env.BRIGHT_DATA_USERNAME);
-  const password = String(process.env.BRIGHT_DATA_PASSWORD);
-  const port = 9222;
-  // const session_id = (1000000 * Math.random()) | 0;
-  const SBR_WS_ENDPOINT = `wss://${username}:${password}@brd.superproxy.io:${port}`;
-//   var request = require('request-promise');
-//   var username = String(process.env.BRIGHT_DATA_USERNAME);
-//   var password = String(process.env.BRIGHT_DATA_PASSWORD);
-//   var port = 22225;
-//   var session_id = (1000000 * Math.random())|0;
-//   const proxy = `http://${username}:${password}@brd.superproxy.io:${port}`;
-//   var options = {
-//     auth: {
-//       username: `${username}-session-${session_id}`,
-//       password,
-//     },
-//     url: url,
-//     proxy: proxy,
-//     rejectUnauthorized: false
-// };
-  
-
-  console.log('Connecting to Scraping Browser...');
-    const browser = await puppeteer.connect({
-      browserWSEndpoint: SBR_WS_ENDPOINT,
-    });
+  // const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
 
   try {
-    // request(options)
-    // .then(function(data: any){ console.log(data); },
-    //       function(err: any){ console.error(err); });
+    console.log('Подключение прошло успешно! Перенаправление на новую страницу');
+    const context = await browser.newContext({ userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'});
+    const page = await context.newPage();
 
-    //Заходим на страницу
-    const page = await browser.newPage();
-    console.log('Connected! Navigating to ' + url + '...');
-    await page.goto(url, {"waitUntil" : "networkidle0"});
+    await page.goto(url), { timeout: 2 * 60 * 1000 };
+    await page.waitForSelector("h1");
+    console.log('Перенаправились! Скрейпинг в процессе...');
 
-    const body = await page.waitForSelector('body');
-    console.log('Scraping <body> text...');
-    // const text = await body?.evaluate(b => b.innerText);
-    // console.log(text);
-    
-    const allArticles: any = await body?.evaluate(() => {
+    const allArticles: any = await page.evaluate(() => {
       const articles = document.querySelectorAll('main');
 
       return Array.from(articles).map((article) => {
-        const title = article.querySelector('h1')?.innerText;
-        const currentPrice = article.querySelector('.price-block__final-price')?.textContent;
-        const originalPrice = article.querySelector('.price-block__old-price')?.textContent;
-        const stars = article.querySelector('.product-page .product-page__common-info .product-review__rating')?.textContent;
-        const reviewsCount = article.querySelector('.product-page .product-page__common-info .product-review__count-review')?.textContent;
-        const category = article.querySelector('.breadcrumbs li:nth-child(3) .breadcrumbs__link')?.textContent;
-        const description = article.querySelector('.option__text')?.textContent; //Не получается пока что достать текст контент
-        const image = article.querySelector('.product-page .photo-zoom__preview')?.getAttribute('src');
-        return { title, currentPrice, originalPrice, stars, reviewsCount, category, description, image };
-      })
+            const title = article.querySelector('h1')?.innerText;
+            const currentPrice = article.querySelector('.price-block__final-price')?.textContent;
+            const originalPrice = article.querySelector('.price-block__old-price')?.textContent;
+            const stars = article.querySelector('.product-page .product-page__common-info .product-review__rating')?.textContent;
+            const reviewsCount = article.querySelector('.product-page .product-page__common-info .product-review__count-review')?.textContent;
+            const category = article.querySelector('.breadcrumbs li:nth-child(3) .breadcrumbs__link')?.textContent;
+            const description = article.querySelector('.option__text')?.textContent; //Не получается пока что достать текст контент
+            const image = article.querySelector('.product-page .photo-zoom__preview')?.getAttribute('src');
+            return { title, currentPrice, originalPrice, stars, reviewsCount, category, description, image };
+          })
     });
+    
+    console.log(allArticles);
 
     //Парсим данные
     const title = allArticles[0].title?.trim();
     const currentPrice = extractPrice(allArticles[0].currentPrice);
-    const originalPrice = extractPrice(allArticles[0].originalPrice);
+    const originalPrice = !!allArticles[0].originalPrice ? extractPrice(allArticles[0].originalPrice) : allArticles[0].currentPrice;
     const stars = allArticles[0].stars?.trim();
     const reviewsCount = allArticles[0].reviewsCount?.trim().replace(/[\D]+/g, '');
     const category = allArticles[0].category?.trim();
@@ -181,7 +149,5 @@ export async function scrapeWildberriesProduct(url: string) {
 
   } catch (error: any) {
     console.log(error);
-  } finally {
-    await browser.close();
   }
 }

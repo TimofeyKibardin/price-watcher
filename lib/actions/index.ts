@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import Product from "../models/product.model";
 import { connectToDB } from "../mongoose";
+import pw from 'playwright';
 import { scrapeAmazonProduct, scrapeWildberriesProduct } from "../scraper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
 import { User } from "@/types";
@@ -13,8 +14,15 @@ export async function scrapeAndStoreProduct(productUrl: string) {
 
   try {
     connectToDB();
+      // const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
 
-    const scrapedProduct = await scrapeWildberriesProduct(productUrl);
+    //Открываем подключение к браузеру
+    console.log('Подключение к браузеру для скрейпинга...');
+    // const browser = await pw.chromium.connectOverCDP(SBR_CDP);
+    const browser = await pw.chromium.launch({ headless: true });
+    const scrapedProduct = await scrapeWildberriesProduct(productUrl, browser);
+
+    await browser.close();
 
     if(!scrapedProduct) return;
 
