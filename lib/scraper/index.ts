@@ -94,7 +94,7 @@ export async function scrapeWildberriesProduct(url: string, browser: any) {
     const defaultContext = browser.contexts()[0];
     const page = defaultContext.pages()[0];
 
-    await page.goto(url), { timeout: 2 * 60 * 1000 };
+    await page.goto(url, { timeout: 2 * 60 * 1000 });
     await page.waitForSelector("h1");
     console.log('Перенаправились! Скрейпинг в процессе...');
 
