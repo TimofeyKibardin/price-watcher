@@ -24,11 +24,12 @@ export async function GET(request: Request) {
     console.log('Подключение к браузеру для скрейпинга...');
     // const browser = await pw.chromium.launch({ headless: true });
     const browser = await pw.chromium.connectOverCDP(SBR_CDP);
+    const context = await browser.newContext();
     // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
         //Получаем информацию по товарам
-        const scrapedProduct = await scrapeWildberriesProduct(currentProduct.url, browser);
+        const scrapedProduct = await scrapeWildberriesProduct(currentProduct.url, context);
 
         if (!scrapedProduct) return new Error("Товары не найдены");
 

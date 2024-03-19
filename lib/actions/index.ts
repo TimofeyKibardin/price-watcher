@@ -14,13 +14,14 @@ export async function scrapeAndStoreProduct(productUrl: string) {
 
   try {
     connectToDB();
-      const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
+    const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
 
     //Открываем подключение к браузеру
     console.log('Подключение к браузеру для скрейпинга...');
     const browser = await pw.chromium.connectOverCDP(SBR_CDP);
+    const context = await browser.newContext();
     // const browser = await pw.chromium.launch({ headless: true });
-    const scrapedProduct = await scrapeWildberriesProduct(productUrl, browser);
+    const scrapedProduct = await scrapeWildberriesProduct(productUrl, context);
 
     await browser.close();
 

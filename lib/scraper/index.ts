@@ -83,7 +83,7 @@ export async function scrapeAmazonProduct(url: string) {
   }
 }
 
-export async function scrapeWildberriesProduct(url: string, browser: any) {
+export async function scrapeWildberriesProduct(url: string, context: any) {
   if(!url) return;
   // const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
 
@@ -91,8 +91,10 @@ export async function scrapeWildberriesProduct(url: string, browser: any) {
     console.log('Подключение прошло успешно! Перенаправление на новую страницу');
     // const context = await browser.newContext({ userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'});
     // const page = await context.newPage();
-    const defaultContext = browser.contexts()[0];
-    const page = defaultContext.pages()[0];
+    // const defaultContext = browser.contexts()[0];
+    // const page = defaultContext.pages()[0];
+    // const context = await browser.newContext();
+    const page = context.newPage();
 
     await page.goto(url, { timeout: 2 * 60 * 1000 });
     await page.waitForSelector("h1");
