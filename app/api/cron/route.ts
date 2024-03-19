@@ -20,9 +20,10 @@ export async function GET(request: Request) {
     if (!products) throw new Error("Не получили товары");
 
     //Открываем подключение к браузеру
-    // const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
+    const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
     console.log('Подключение к браузеру для скрейпинга...');
-    const browser = await pw.chromium.launch({ headless: true });
+    // const browser = await pw.chromium.launch({ headless: true });
+    const browser = await pw.chromium.connectOverCDP(SBR_CDP);
     // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
