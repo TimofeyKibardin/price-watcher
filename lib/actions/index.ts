@@ -14,7 +14,7 @@ export async function scrapeAndStoreProduct(productUrl: string) {
 
   try {
     connectToDB();
-    const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
+    const SBR_CDP = `http://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:22225`;
 
     //Открываем подключение к браузеру
     console.log('Подключение к браузеру для скрейпинга...');

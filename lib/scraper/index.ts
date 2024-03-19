@@ -89,12 +89,6 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
 
   try {
     console.log('Подключение прошло успешно! Перенаправление на новую страницу');
-    // const context = await browser.newContext({ userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'});
-    // const page = await context.newPage();
-    // const defaultContext = browser.contexts()[0];
-    // const page = defaultContext.pages()[0];
-    // const context = await browser.newContext();
-    // const page = await context.newPage();
 
     await page.goto(url);
     await page.waitForSelector("h1");
