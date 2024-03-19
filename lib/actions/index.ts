@@ -20,9 +20,11 @@ export async function scrapeAndStoreProduct(productUrl: string) {
     console.log('Подключение к браузеру для скрейпинга...');
     const browser = await pw.chromium.connectOverCDP(SBR_CDP);
     const context = await browser.newContext();
+    console.log(context);
     // const browser = await pw.chromium.launch({ headless: true });
     const scrapedProduct = await scrapeWildberriesProduct(productUrl, context);
 
+    await context.close();
     await browser.close();
 
     if(!scrapedProduct) return;
