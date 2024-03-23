@@ -85,8 +85,6 @@ export async function scrapeAmazonProduct(url: string) {
 
 export async function scrapeWildberriesProduct(url: string, page: any) {
   if(!url) return;
-  // const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
-
   try {
     console.log('Подключение прошло успешно! Перенаправление на новую страницу');
 

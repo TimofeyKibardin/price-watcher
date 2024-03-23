@@ -20,7 +20,6 @@ export async function GET(request: Request) {
     if (!products) throw new Error("Не получили товары");
 
     //Открываем подключение к браузеру
-    // const SBR_CDP = `wss://${process.env.BRIGHT_DATA_USERNAME}:${process.env.BRIGHT_DATA_PASSWORD}@brd.superproxy.io:9222`;
     console.log('Подключение к браузеру для скрейпинга...');
     // const browser = await pw.chromium.launch({ headless: true });
     const browser = await pw.chromium.launch({ headless: true });
