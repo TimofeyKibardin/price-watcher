@@ -1,4 +1,5 @@
 import Modal from "@/components/Modal";
+import type { InferGetStaticPropsType, GetStaticProps } from 'next'
 import PriceInfoCard from "@/components/PriceInfoCard";
 import ProductCard from "@/components/ProductCard";
 import { getProductById, getSimilarProducts } from "@/lib/actions"

@@ -7,7 +7,7 @@ import Product from "@/lib/models/product.model";
 import { scrapeWildberriesProduct } from "@/lib/scraper";
 import { generateEmailBody, sendEmail } from "@/lib/nodemailer";
 
-export const maxDuration = 10; // Функция может работать максимум 10 секунд, ограничения тарифа
+export const maxDuration = 300; // Функция может работать максимум 10 секунд, ограничения тарифа
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
