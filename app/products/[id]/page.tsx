@@ -1,5 +1,4 @@
 import Modal from "@/components/Modal";
-import type { InferGetStaticPropsType, GetStaticProps } from 'next'
 import PriceInfoCard from "@/components/PriceInfoCard";
 import ProductCard from "@/components/ProductCard";
 import { getProductById, getSimilarProducts } from "@/lib/actions"
@@ -80,6 +79,12 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                   height={20}
                 />
               </div>
+
+              <div className="p-2 bg-white-200 rounded-10">
+                <p className="text-[14px] text-secondary font-bold">
+                  {product.sellerName}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -120,8 +125,11 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 </div>
               </div>
 
-              <p className="text-sm text-black opacity-50">
+              {/* <p className="text-sm text-black opacity-50">
                 <span className="text-primary-green font-semibold">93% </span> покупателей рекомендуют это
+              </p> */}
+              <p className="text-sm text-secondary opacity-50">
+                Артикул: {product.articleNumber}
               </p>
             </div>
           </div>

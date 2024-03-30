@@ -102,9 +102,11 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
             const stars = article.querySelector('.product-page .product-page__common-info .product-review__rating')?.textContent;
             const reviewsCount = article.querySelector('.product-page .product-page__common-info .product-review__count-review')?.textContent;
             const category = article.querySelector('.breadcrumbs li:nth-child(3) .breadcrumbs__link')?.textContent;
-            const description = article.querySelector('.option__text')?.textContent; //Не получается пока что достать текст контент
+            const description = article.querySelector('p .option__text')?.textContent; //Не получается пока что достать текст контент
             const image = article.querySelector('.product-page .photo-zoom__preview')?.getAttribute('src');
-            return { title, currentPrice, originalPrice, stars, reviewsCount, category, description, image };
+            const articleNumber = article.querySelector('#productNmId')?.textContent;
+            const sellerName = article.querySelector('.seller-info__name')?.textContent;
+            return { title, currentPrice, originalPrice, stars, reviewsCount, category, description, image, articleNumber, sellerName };
           })
     });
     
@@ -119,7 +121,8 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
     const category = allArticles[0].category?.trim();
     const description = allArticles[0].description;
     const image = allArticles.length > 0 ? allArticles[0].image : null;
-    // const description = extractDescription($)
+    const articleNumber = allArticles[0].articleNumber;
+    const sellerName = allArticles[0].sellerName;
 
     // Construct data object with scraped information Создаем объект с полученной информацией
     const data = {
@@ -139,6 +142,8 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
       lowestPrice: Number(currentPrice) || Number(originalPrice),
       highestPrice: Number(originalPrice) || Number(currentPrice),
       averagePrice: Number(currentPrice) || Number(originalPrice),
+      articleNumber: Number(articleNumber || 0),
+      sellerName: String(sellerName)
     }
     console.log(data);
     return data;
