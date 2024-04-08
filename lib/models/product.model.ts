@@ -2,10 +2,11 @@ import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
   url: { type: String, required: true, unique: true },
+  marketplaceType: { type: String, required: true },
   currency: { type: String, required: true },
   image: { type: String, required: true },
   title: { type: String, required: true },
-  articleNumber: { type: Number, required: true },
+  articleNumber: { type: String, required: true },
   sellerName: { type: String, required: true },
   currentPrice: { type: Number, required: true },
   originalPrice: { type: Number, required: true },

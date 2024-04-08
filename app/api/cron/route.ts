@@ -4,7 +4,7 @@ import { getLowestPrice, getHighestPrice, getAveragePrice, getEmailNotifType } f
 import { connectToDB } from "@/lib/mongoose";
 import pw from 'playwright';
 import Product from "@/lib/models/product.model";
-import { scrapeWildberriesProduct } from "@/lib/scraper";
+import { scrapeWildberriesProduct, scrapeKazanexpressProduct } from "@/lib/scraper";
 import { generateEmailBody, sendEmail } from "@/lib/nodemailer";
 
 export const maxDuration = 300; // Функция может работать максимум 10 секунд, ограничения тарифа
@@ -29,7 +29,14 @@ export async function GET(request: Request) {
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
         //Получаем информацию по товарам
-        const scrapedProduct = await scrapeWildberriesProduct(currentProduct.url, page);
+
+        let scrapedProduct;
+    
+        if (currentProduct.url.includes('wildberries')) {
+          scrapedProduct = await scrapeWildberriesProduct(currentProduct.url, page);
+        } else if (currentProduct.url.includes('kazanexpress')) {
+          scrapedProduct = await scrapeKazanexpressProduct(currentProduct.url, page);
+        }
 
         if (!scrapedProduct) return new Error("Товары не найдены");
 

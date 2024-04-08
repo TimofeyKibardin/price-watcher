@@ -20,7 +20,9 @@ export function extractPrice(...elements: any) {
     const priceText = element.trim();
 
     if(priceText) {
+      console.log(priceText);
       const cleanPrice = priceText.replace(/[^\d.]/g, '');
+      console.log(cleanPrice);
 
       let firstPrice; 
 

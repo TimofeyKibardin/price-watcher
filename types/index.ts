@@ -1,5 +1,6 @@
 export type PriceHistoryItem = {
   price: number;
+  date: Date;
 };
 
 export type User = {
@@ -9,6 +10,7 @@ export type User = {
 export type Product = {
   _id?: string;
   url: string;
+  marketplaceType: string;
   currency: string;
   image: string;
   title: string;
@@ -25,7 +27,7 @@ export type Product = {
   stars: number;
   isOutOfStock: Boolean;
   users?: User[];
-  articleNumber: number;
+  articleNumber: string;
   sellerName: string;
 };
 

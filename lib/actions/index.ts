@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import Product from "../models/product.model";
 import { connectToDB } from "../mongoose";
 import pw from 'playwright';
-import { scrapeAmazonProduct, scrapeWildberriesProduct } from "../scraper";
+import { scrapeAmazonProduct, scrapeWildberriesProduct, scrapeKazanexpressProduct } from "../scraper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
 import { User } from "@/types";
 import { generateEmailBody, sendEmail } from "../nodemailer";
@@ -19,9 +19,13 @@ export async function scrapeAndStoreProduct(productUrl: string) {
     const browser = await pw.chromium.launch({ headless: true });
     const context = await browser.newContext();
     const page = await context.newPage();
-    console.log();
-    // const browser = await pw.chromium.launch({ headless: true });
-    const scrapedProduct = await scrapeWildberriesProduct(productUrl, page);
+    let scrapedProduct;
+    
+    if (productUrl.includes('wildberries')) {
+      scrapedProduct = await scrapeWildberriesProduct(productUrl, page);
+    } else if (productUrl.includes('kazanexpress')) {
+      scrapedProduct = await scrapeKazanexpressProduct(productUrl, page);
+    }
 
     await context.close();
     await browser.close();
@@ -36,7 +40,7 @@ export async function scrapeAndStoreProduct(productUrl: string) {
       const updatedPriceHistory: any = [
         ...existingProduct.priceHistory,
         { price: scrapedProduct.currentPrice }
-      ]
+      ];
 
       product = {
         ...scrapedProduct,

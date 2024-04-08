@@ -1,6 +1,7 @@
 import Modal from "@/components/Modal";
 import PriceInfoCard from "@/components/PriceInfoCard";
 import ProductCard from "@/components/ProductCard";
+import PriceChart from "@/components/PriceChart";
 import { getProductById, getSimilarProducts } from "@/lib/actions"
 import { formatNumber } from "@/lib/utils";
 import { Product } from "@/types";
@@ -62,7 +63,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 </p>
               </div>
 
-              <div className="p-2 bg-white-200 rounded-10">
+              {/* <div className="p-2 bg-white-200 rounded-10">
                 <Image 
                   src="/assets/icons/bookmark.svg"
                   alt="bookmark"
@@ -78,7 +79,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                   width={20}
                   height={20}
                 />
-              </div>
+              </div> */}
 
               <div className="p-2 bg-white-200 rounded-10">
                 <p className="text-[14px] text-secondary font-bold">
@@ -112,7 +113,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                   </p>
                 </div>
 
-                <div className="product-reviews">
+                {/* <div className="product-reviews">
                   <Image 
                     src="/assets/icons/comment.svg"
                     alt="comment"
@@ -122,7 +123,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                   <p className="text-sm text-secondary font-semibold">
                     {product.reviewsCount} Отзывов
                   </p>
-                </div>
+                </div> */}
               </div>
 
               {/* <p className="text-sm text-black opacity-50">
@@ -160,6 +161,15 @@ const ProductDetails = async ({ params: { id } }: Props) => {
           </div>
 
           <Modal productId={id} />
+          <div className="my-7 flex flex-col gap-5 h-12">
+            <PriceChart
+              labels={product.priceHistory.map((priceHist: any) => {
+                return priceHist.date.getDate() + '.' + priceHist.date.getMonth() + '.' + priceHist.date.getFullYear();
+              })}
+              dataset={product.priceHistory.map((priceHist: any) => priceHist.price)}
+            />
+          </div>
+          
         </div>
       </div>
 
@@ -181,7 +191,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
             width={22}
             height={22}
           />
-
+          
           <Link href="/" className="text-base text-white">
             Вернуться
           </Link>
