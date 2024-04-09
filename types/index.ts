@@ -33,7 +33,6 @@ export type Product = {
 
 export type NotificationType =
   | "WELCOME"
-  | "CHANGE_OF_STOCK"
   | "LOWEST_PRICE"
   | "THRESHOLD_MET";
 
