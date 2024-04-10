@@ -22,23 +22,6 @@ import { FormEvent, useState } from 'react'
 //   return false;
 // }
 
-const isValidWildberriesProductURL = (url: string) => {
-  try {
-    const parsedURL = new URL(url);
-    const hostname = parsedURL.hostname;
-
-    if(
-      hostname.includes('wildberries.ru') || 
-      hostname.includes ('wildberries.') || 
-      hostname.endsWith('wildberries')
-    ) {
-      return true;
-    }
-  } catch (error) {
-    return false;
-  }
-}
-
 const isValidProductURL = (url: string) => {
   try {
     const parsedURL = new URL(url);
