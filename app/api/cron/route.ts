@@ -15,9 +15,13 @@ export async function GET(request: Request) {
   try {
     connectToDB();
 
+    console.log("Обновление информации о товарах");
+
     const products = await Product.find({});
 
     if (!products) throw new Error("Не получили товары");
+
+    console.log("Количество товаров: " + products.length);
 
     //Открываем подключение к браузеру
     console.log('Подключение к браузеру для скрейпинга...');
@@ -81,6 +85,8 @@ export async function GET(request: Request) {
         return updatedProduct;
       })
     );
+
+    console.log("Количество обновленных продуктов: " + updatedProducts.length);
 
     await context.close();
     await browser.close();
