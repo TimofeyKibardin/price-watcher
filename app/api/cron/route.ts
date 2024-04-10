@@ -28,14 +28,14 @@ export async function GET(request: Request) {
     // const browser = await pw.chromium.launch({ headless: true });
     const browser = await pw.chromium.launch({ headless: true });
     const context = await browser.newContext();
-    const page = await context.newPage();
     // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
         //Получаем информацию по товарам
 
         let scrapedProduct;
-    
+        
+        const page = await context.newPage();
         if (currentProduct.url.includes('wildberries')) {
           scrapedProduct = await scrapeWildberriesProduct(currentProduct.url, page);
         } else if (currentProduct.url.includes('kazanexpress')) {
