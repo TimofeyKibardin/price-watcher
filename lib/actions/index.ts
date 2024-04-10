@@ -82,7 +82,7 @@ export async function getAllProducts() {
     connectToDB();
 
     const products = await Product.find();
-
+    console.log("Количество найденных товаров: " + products.length);
     return products;
   } catch (error) {
     console.log(error);
