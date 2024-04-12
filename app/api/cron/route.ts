@@ -11,29 +11,138 @@ export const maxDuration = 300; // Функция может работать м
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export async function GET(request: Request) {
+// export async function GET() {
+//   try {
+//     connectToDB();
+
+//     console.log("Обновление информации о товарах");
+//     const products = await Product.find({});
+
+//     //Если товаров нет, то возврат
+//     if (!products) throw new Error("Не получили товары");
+
+//     console.log("Количество товаров: " + products.length);
+
+//     //Открываем подключение к браузеру
+//     console.log('Подключение к браузеру для скрейпинга...');
+//     const browser = await pw.chromium.launch({ headless: true });
+//     // const context = await browser.newContext();
+//     // const page = await context.newPage();
+//     // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных
+//     const updatedProducts = await Promise.all(
+//       products.map(async (currentProduct) => {
+//         //Получаем информацию по товарам
+
+//         let scrapedProduct;
+//         const context = await browser.newContext();
+//         const page = await context.newPage();
+//         if (currentProduct.url.includes('wildberries')) {
+//           scrapedProduct = await scrapeWildberriesProduct(currentProduct.url, page);
+//         } else if (currentProduct.url.includes('kazanexpress')) {
+//           scrapedProduct = await scrapeKazanexpressProduct(currentProduct.url, page);
+//         }
+
+//         if (!scrapedProduct) return new Error("Товары не найдены");
+
+//         const updatedPriceHistory = [
+//           ...currentProduct.priceHistory,
+//           { price: scrapedProduct.currentPrice }
+//         ];
+
+//         const product = {
+//           ...scrapedProduct,
+//           priceHistory: updatedPriceHistory,
+//           lowestPrice: getLowestPrice(updatedPriceHistory),
+//           highestPrice: getHighestPrice(updatedPriceHistory),
+//           averagePrice: getAveragePrice(updatedPriceHistory),
+//         };
+
+//         //Обновляем товары в БД
+//         const updatedProduct = await Product.findOneAndUpdate(
+//           { url: product.url },
+//           product
+//         );
+
+//         // ======================== 2. Смотрим статус товаров и отправляем на почту оповещение если необходимо
+//         const emailNotifType = getEmailNotifType(
+//           scrapedProduct,
+//           currentProduct
+//         );
+
+//         if (emailNotifType && updatedProduct.users.length > 0) {
+//           const productInfo = {
+//             title: updatedProduct.title,
+//             url: updatedProduct.url,
+//           };
+//           // Создаем содержимое сообщения
+//           const emailContent = await generateEmailBody(productInfo, emailNotifType);
+//           // Получаем массив пользователей для рассылки
+//           const userEmails = updatedProduct.users.map((user: any) => user.email);
+//           // Рассылаем email-оповещения
+//           await sendEmail(emailContent, userEmails);
+//         }
+
+//         await page.close();
+//         await context.close();
+
+//         return updatedProduct;
+//       })
+//     );
+
+//     console.log("Количество обновленных продуктов: " + updatedProducts.length);
+
+//     // await context.close();
+//     await browser.close();
+
+//     // return NextResponse.json({
+//     //   message: "Ok",
+//     //   data: updatedProducts,
+//     // });
+//   } catch (error: any) {
+//     throw new Error(`Ошибка получения списка товаров: ${error.message}`);
+//   }
+// }
+
+export async function GET() {
   try {
+    //Подключение к БД
     connectToDB();
 
     console.log("Обновление информации о товарах");
-
     const products = await Product.find({});
 
+    //Если товаров нет, то возврат
     if (!products) throw new Error("Не получили товары");
 
     console.log("Количество товаров: " + products.length);
 
+    //Конфигурация прокси
+    const username = String(process.env.BRIGHT_DATA_USERNAME);
+    const password = String(process.env.BRIGHT_DATA_PASSWORD);
+    const port = 9222;
+    const sessionID = (1000000 * Math.random()) | 0;
+    const options = {
+      auth: {
+        username: `${username}-session-${sessionID}`,
+        password
+      },
+      host: "brd.superproxy.io",
+      port,
+      rejectUnauthorized: false
+    }
+
     //Открываем подключение к браузеру
-    console.log('Подключение к браузеру для скрейпинга...');
-    // const browser = await pw.chromium.launch({ headless: true });
-    const browser = await pw.chromium.launch({ headless: true });
-    const context = await browser.newContext();
-    const page = await context.newPage();
+    console.log('Подключение к браузеру...');
+    const SBR_CDP = `wss://${options.auth.username}:${options.auth.password}@${options.host}:${options.port}`;
+    const browser = await pw.chromium.connectOverCDP(SBR_CDP);
+
+    const page = await browser.newPage();
+    console.log('Подключение прошло успешно! Направляемся по ссылкам...');
+
     // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
         //Получаем информацию по товарам
-
         let scrapedProduct;
 
         if (currentProduct.url.includes('wildberries')) {
@@ -86,15 +195,14 @@ export async function GET(request: Request) {
       })
     );
 
-    console.log("Количество обновленных продуктов: " + updatedProducts.length);
-
-    await context.close();
+    await page.close();
     await browser.close();
 
     return NextResponse.json({
       message: "Ok",
       data: updatedProducts,
     });
+
   } catch (error: any) {
     throw new Error(`Ошибка получения списка товаров: ${error.message}`);
   }

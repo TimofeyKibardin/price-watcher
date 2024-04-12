@@ -4,19 +4,16 @@ import HeroCarousel from "@/components/HeroCarousel"
 import Searchbar from "@/components/SearchBar"
 import { getAllProducts } from "@/lib/actions"
 import ProductCard from "@/components/ProductCard"
-import ButtonReload from '@/components/ButtonReload';
 
 import { FormEvent } from 'react'
+// import cron from "node-cron"
+// import { GET } from "./api/cron/route"
 
 const Home = async () => {
+  // cron.schedule('* * * * *', function() {
+  //   console.log('running a task every minute');
+  // });
   const allProducts = await getAllProducts();
-
-
-  // async function handleSubmit(e: any) {
-  //   e.preventDefault();
-  //   await getAllProducts();
-  //   window.location.reload();
-  // }
 
   return (
     <>
@@ -24,8 +21,8 @@ const Home = async () => {
         <div className="flex max-xl:flex-col gap-16">
           <div className="flex flex-col justify-center"> 
             <h1 className="head-text">
-              Экономьте вместе с
-              <span className="text-primary"> PriceWatcher</span>
+              Экономьте вместе с нами
+              {/* <span className="text-primary"> PriceWatcher</span> */}
             </h1>
             <Searchbar />
           </div>
@@ -35,16 +32,7 @@ const Home = async () => {
 
       <section className="trending-section">
         <div className="flex flex-wrap gap-x-8">
-          <h2 className="section-text">Добавленные товары</h2>
-          {/* <button
-            type="button"
-            className="searchbar-btn"
-            disabled={false}
-            onClick={getAllProducts}
-          >
-            Перезагрузить список
-          </button> */}
-          {/* <ButtonReload /> */}
+          <h2 className="section-text">Отслеживаемые товары</h2>
         </div>
         
         <div className="flex flex-wrap gap-x-8 gap-y-16">

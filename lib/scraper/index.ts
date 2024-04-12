@@ -86,17 +86,18 @@ export async function scrapeAmazonProduct(url: string) {
 
 
 export async function scrapeWildberriesProduct(url: string, page: any) {
-  if(!url) return;
+  //Возврат из функции, если передан пустой url
+  if (!url) return;
   try {
-    console.log('Подключение прошло успешно! Перенаправление на новую страницу Wildberries');
-
+    //Перенаправляемся по ссылке
     await page.goto(url);
-    await page.waitForSelector("h1");
-    console.log('Перенаправились! Скрейпинг в процессе...');
+    console.log('Направление прошло успешно! Ожидаем загрузку элемента вёрстки...');
+    //Ожидаем элемент верстки
+    const body = await page.waitForSelector('h1');
 
     const allArticles: any = await page.evaluate(() => {
       const articles = document.querySelectorAll('main');
-
+      
       return Array.from(articles).map((article) => {
         const title = article.querySelector('h1')?.innerText;
         const currentPrice = article.querySelector('.price-block__final-price')?.textContent;
@@ -153,7 +154,7 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
     return data;
 
   } catch (error: any) {
-    console.log(error);
+    throw new Error(`Ошибка скрейпинга товара: ${error.message}`);
   }
 }
 
