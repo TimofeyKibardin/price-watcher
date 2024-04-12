@@ -12,6 +12,26 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function GET() {
+  //Конфигурация прокси
+  const username = String(process.env.BRIGHT_DATA_USERNAME);
+  const password = String(process.env.BRIGHT_DATA_PASSWORD);
+  const port = 9222;
+  const sessionID = (1000000 * Math.random()) | 0;
+  const options = {
+    auth: {
+      username: `${username}-session-${sessionID}`,
+      password
+    },
+    host: "brd.superproxy.io",
+    port,
+    rejectUnauthorized: false
+  }
+
+  //Открываем подключение к браузеру
+  console.log('Подключение к браузеру...');
+  const SBR_CDP = `wss://${options.auth.username}:${options.auth.password}@${options.host}:${options.port}`;
+  const browser = await pw.chromium.connectOverCDP(SBR_CDP);
+
   try {
     //Подключение к БД
     connectToDB();
@@ -23,26 +43,6 @@ export async function GET() {
     if (!products) throw new Error("Не получили товары");
 
     console.log("Количество товаров: " + products.length);
-
-    //Конфигурация прокси
-    const username = String(process.env.BRIGHT_DATA_USERNAME);
-    const password = String(process.env.BRIGHT_DATA_PASSWORD);
-    const port = 9222;
-    const sessionID = (1000000 * Math.random()) | 0;
-    const options = {
-      auth: {
-        username: `${username}-session-${sessionID}`,
-        password
-      },
-      host: "brd.superproxy.io",
-      port,
-      rejectUnauthorized: false
-    }
-
-    //Открываем подключение к браузеру
-    console.log('Подключение к браузеру...');
-    const SBR_CDP = `wss://${options.auth.username}:${options.auth.password}@${options.host}:${options.port}`;
-    const browser = await pw.chromium.connectOverCDP(SBR_CDP);
 
     const page = await browser.newPage();
     console.log('Подключение прошло успешно! Направляемся по ссылкам...');
@@ -104,7 +104,6 @@ export async function GET() {
     );
 
     await page.close();
-    await browser.close();
 
     return NextResponse.json({
       message: "Ok",
@@ -113,5 +112,7 @@ export async function GET() {
 
   } catch (error: any) {
     throw new Error(`Ошибка получения списка товаров: ${error.message}`);
+  } finally {
+    await browser.close();
   }
 }
