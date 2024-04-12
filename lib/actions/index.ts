@@ -104,6 +104,7 @@ export async function scrapeAndStoreProduct(productUrl: string) {
   const browser = await pw.chromium.connectOverCDP(SBR_CDP);
 
   try {
+    //Открываем страницу
     const page = await browser.newPage();
     console.log('Подключение прошло успешно! Направляемся по ссылке...');
     let scrapedProduct;
