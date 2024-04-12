@@ -44,12 +44,14 @@ export async function GET() {
 
     console.log("Количество товаров: " + products.length);
 
-    const page = await browser.newPage();
-    console.log('Подключение прошло успешно! Направляемся по ссылкам...');
+    
 
     // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
+        const page = await browser.newPage();
+        console.log('Подключение прошло успешно! Направляемся по ссылкам...');
+
         //Получаем информацию по товарам
         let scrapedProduct;
 
@@ -102,8 +104,6 @@ export async function GET() {
         return updatedProduct;
       })
     );
-
-    await page.close();
 
     return NextResponse.json({
       message: "Ok",
