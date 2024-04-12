@@ -1,19 +1,15 @@
-// "use client"
-
 import HeroCarousel from "@/components/HeroCarousel"
 import Searchbar from "@/components/SearchBar"
 import { getAllProducts } from "@/lib/actions"
 import ProductCard from "@/components/ProductCard"
-
-import { FormEvent } from 'react'
-// import cron from "node-cron"
-// import { GET } from "./api/cron/route"
+import { revalidatePath } from "next/cache";
 
 const Home = async () => {
   // cron.schedule('* * * * *', function() {
   //   console.log('running a task every minute');
   // });
-  const allProducts = await getAllProducts();
+  let allProducts = await getAllProducts();
+  revalidatePath('/');
 
   return (
     <>
@@ -22,7 +18,6 @@ const Home = async () => {
           <div className="flex flex-col justify-center"> 
             <h1 className="head-text">
               Экономьте вместе с нами
-              {/* <span className="text-primary"> PriceWatcher</span> */}
             </h1>
             <Searchbar />
           </div>

@@ -123,7 +123,7 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
     const description = allArticles[0].description;
     const image = allArticles.length > 0 ? allArticles[0].image : null;
     const articleNumber = allArticles[0].articleNumber;
-    const sellerName = allArticles[0].sellerName.trim();
+    const sellerName = allArticles[0].sellerName?.trim();
 
     //Создаем объект с полученной информацией
     const data = {
