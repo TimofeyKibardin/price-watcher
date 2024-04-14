@@ -13,24 +13,29 @@ export const revalidate = 0;
 
 export async function GET() {
   //Конфигурация прокси
-  const username = String(process.env.BRIGHT_DATA_USERNAME);
-  const password = String(process.env.BRIGHT_DATA_PASSWORD);
-  const port = 9222;
-  const sessionID = (1000000 * Math.random()) | 0;
-  const options = {
-    auth: {
-      username: `${username}-session-${sessionID}`,
-      password
-    },
-    host: "brd.superproxy.io",
-    port,
-    rejectUnauthorized: false
-  }
+  // const username = String(process.env.BRIGHT_DATA_USERNAME);
+  // const password = String(process.env.BRIGHT_DATA_PASSWORD);
+  // const port = 9222;
+  // const sessionID = (1000000 * Math.random()) | 0;
+  // const options = {
+  //   auth: {
+  //     username: `${username}-session-${sessionID}`,
+  //     password
+  //   },
+  //   host: "brd.superproxy.io",
+  //   port,
+  //   rejectUnauthorized: false
+  // }
+
+  //Открываем подключение к браузеру
+  // console.log('Подключение к браузеру...');
+  // const SBR_CDP = `wss://${options.auth.username}:${options.auth.password}@${options.host}:${options.port}`;
+  // const browser = await pw.chromium.connectOverCDP(SBR_CDP);
 
   //Открываем подключение к браузеру
   console.log('Подключение к браузеру...');
-  const SBR_CDP = `wss://${options.auth.username}:${options.auth.password}@${options.host}:${options.port}`;
-  const browser = await pw.chromium.connectOverCDP(SBR_CDP);
+  const browser = await pw.chromium.launch({ headless: true });
+  const context = await browser.newContext();
 
   try {
     //Подключение к БД
@@ -44,12 +49,11 @@ export async function GET() {
 
     console.log("Количество товаров: " + products.length);
 
-    
-
     // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
-        const page = await browser.newPage();
+        // const page = await browser.newPage();
+        const page = await context.newPage();
         console.log('Подключение прошло успешно! Направляемся по ссылкам...');
 
         //Получаем информацию по товарам
