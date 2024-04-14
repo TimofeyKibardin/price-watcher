@@ -1,5 +1,4 @@
 name: update_prices
-run-name: Обновление цен на отслеживаемые товары...
 
 on:
   schedule:
