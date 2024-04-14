@@ -3,7 +3,7 @@ name: update_prices
 on:
   schedule:
     # Запуск каждые 5 минут
-    - cron: '5 * * * *'
+    - cron: '1 * * * *'
   # workflow-dispatch:
 
 jobs:
