@@ -1,12 +1,14 @@
 name: update_prices
 run-name: Обновление цен на отслеживаемые товары...
+
 on:
   schedule:
     # Запуск каждые 5 минут
-    - cron: '1 * * * *'
-  workflow-dispatch:
+    - cron: '5 * * * *'
+  # workflow-dispatch:
+
 jobs:
-  build:
+  my-job:
     name: Price checking
     runs-on: ubuntu-latest
     steps:
