@@ -1,0 +1,13 @@
+name: update_prices
+run-name: Обновление цен на отслеживаемые товары...
+on:
+  schedule:
+    # Запуск каждые 5 минут
+    - cron: '1 * * * *'
+jobs:
+  build:
+    name: Price checking
+    runs-on: [self-hosted, linux]
+    steps:
+      - name: first-step
+        run: echo "Hello World"
