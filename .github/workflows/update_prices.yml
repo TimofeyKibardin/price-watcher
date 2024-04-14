@@ -4,10 +4,11 @@ on:
   schedule:
     # Запуск каждые 5 минут
     - cron: '1 * * * *'
+  workflow-dispatch:
 jobs:
   build:
     name: Price checking
-    runs-on: [self-hosted, linux]
+    runs-on: ubuntu-latest
     steps:
       - name: first-step
         run: echo "Hello World"
