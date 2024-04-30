@@ -70,8 +70,7 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
   }
 }
 
-// export async function scrapeKazanexpressProduct(url: string, page: any) {
-export async function scrapeKazanexpressProduct(url: string) {
+export async function scrapeKazanexpressProduct(url: string, page: any) {
   if(!url) return;
   try {
     console.log('Подключение прошло успешно! Перенаправление на новую страницу Kazanexpress');

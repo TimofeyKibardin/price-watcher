@@ -56,12 +56,12 @@ const Searchbar = () => {
         value={searchPrompt}
         onChange={(e) => setSearchPrompt(e.target.value)}
         placeholder="Введите ссылку на товар"
-        className="searchbar-input"
+        className="searchbar-inputfield"
       />
 
       <button 
         type="submit" 
-        className="searchbar-btn"
+        className="searchbar-button"
         disabled={searchPrompt === ''}
       >
         {isLoading ? 'Ищем...' : 'Поиск'}

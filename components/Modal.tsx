@@ -31,12 +31,12 @@ const Modal = ({ productId }: Props) => {
 
   return (
     <>
-      <button type="button" className="btn" onClick={openModal}>
+      <button type="button" className="button-main" onClick={openModal}>
         Отслеживать
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" onClose={closeModal} className="dialog-container">
+        <Dialog as="div" onClose={closeModal} className="mail_notification-container">
           <div className="min-h-screen px-4 text-center">
             <Transition.Child
               as={Fragment}
@@ -64,9 +64,9 @@ const Modal = ({ productId }: Props) => {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="dialog-content">
+              <div className="mail_notification-content">
                 <div className="flex flex-col">
-                  <h4 className="dialog-head_text">
+                  <h4 className="mail_notification-head_text">
                     Будьте в курсе новостей о ценах на товары!
                   </h4>
 
@@ -79,7 +79,7 @@ const Modal = ({ productId }: Props) => {
                   <label htmlFor="email" className="text-sm font-medium text-gray-700">
                     Email адрес
                   </label>
-                  <div className="dialog-input_container">
+                  <div className="mail_notification_container">
                     <Image 
                       src="/assets/icons/mail.svg"
                       alt='mail'
@@ -94,12 +94,12 @@ const Modal = ({ productId }: Props) => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Введите email"
-                      className='dialog-input'
+                      className='mail_notification-inputfield'
                     />
                   </div>
 
                   <button type="submit"
-                    className="dialog-btn"
+                    className="mail_notification-button"
                   >
                     {isSubmitting ? 'Отправляем...' : 'Отслеживать'}
                   </button>
