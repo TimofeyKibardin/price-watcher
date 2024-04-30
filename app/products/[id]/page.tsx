@@ -108,7 +108,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
           </div>
 
           <div className="my-2 flex flex-col gap-5">
-            <div className="flex gap-5 flex-wrap">
+            <div className="flex gap-1 flex-wrap">
               <PriceInfoCard 
                 title="Текущая цена"
                 iconSrc="/assets/icons/price-tag-new.webp"
