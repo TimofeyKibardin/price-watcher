@@ -66,26 +66,6 @@ const Modal = ({ productId }: Props) => {
             >
               <div className="dialog-content">
                 <div className="flex flex-col">
-                  <div className="flex justify-between">
-                    <div className="p-3 border border-gray-200 rounded-10">
-                      <Image 
-                        src="/assets/icons/logo.svg"
-                        alt="logo"
-                        width={28}
-                        height={28}
-                      />
-                    </div>
-
-                    <Image 
-                      src="/assets/icons/x-close.svg"
-                      alt="close"
-                      width={24}
-                      height={24}
-                      className="cursor-pointer"
-                      onClick={closeModal}
-                    />
-                  </div>
-
                   <h4 className="dialog-head_text">
                     Будьте в курсе новостей о ценах на товары!
                   </h4>

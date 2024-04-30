@@ -4,7 +4,6 @@ import * as React from 'react';
 import { defaults } from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
 
-// defaults.maintainAspectRatio = false;
 defaults.responsive = true;
 defaults.plugins.title.display = true;
 defaults.plugins.title.align = "center";
@@ -31,10 +30,8 @@ export default function PriceChart({labels, dataset}: Props) {
                         {
                             data: dataset,
                             backgroundColor: '#981e97',
-                            // borderColor: '#FFFFFF',
                             fill: true,
-                            pointBackgroundColor: '#FFFFFF',
-                            // pointBorderColor: "#981e97"
+                            pointBackgroundColor: '#FFFFFF'
                         }
                     ]
                 }}

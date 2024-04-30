@@ -1,50 +1,22 @@
 import { NextResponse } from "next/server";
-
+import pw from 'playwright';
 import { getLowestPrice, getHighestPrice, getAveragePrice, getEmailNotifType } from "@/lib/utils";
 import { connectToDB } from "@/lib/mongoose";
-import pw from 'playwright';
 import Product from "@/lib/models/product.model";
 import { scrapeWildberriesProduct, scrapeKazanexpressProduct } from "@/lib/scraper";
 import { generateEmailBody, sendEmail } from "@/lib/nodemailer";
 
-export const maxDuration = 10; // Функция может работать максимум 10 секунд
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 export async function GET() {
-  //Конфигурация прокси
-  // const username = String(process.env.BRIGHT_DATA_USERNAME);
-  // const password = String(process.env.BRIGHT_DATA_PASSWORD);
-  // const port = 9222;
-  // const sessionID = (1000000 * Math.random()) | 0;
-  // const options = {
-  //   auth: {
-  //     username: `${username}-session-${sessionID}`,
-  //     password
-  //   },
-  //   host: "brd.superproxy.io",
-  //   port,
-  //   rejectUnauthorized: false
-  // }
-
-  //Открываем подключение к браузеру
-  // console.log('Подключение к браузеру...');
-  // const SBR_CDP = `wss://${options.auth.username}:${options.auth.password}@${options.host}:${options.port}`;
-  // const browser = await pw.chromium.connectOverCDP(SBR_CDP);
-
-  //Открываем подключение к браузеру
   console.log('Подключение к браузеру...');
   const browser = await pw.chromium.launch({ headless: true });
   const context = await browser.newContext();
 
   try {
-    //Подключение к БД
     connectToDB();
 
     console.log("Обновление информации о товарах");
     const products = await Product.find({});
 
-    //Если товаров нет, то возврат
     if (!products) throw new Error("Не получили товары");
 
     console.log("Количество товаров: " + products.length);
@@ -52,11 +24,9 @@ export async function GET() {
     // ======================== 1. Проходим по сохраненным товарам и обновляем базу данных
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
-        // const page = await browser.newPage();
         const page = await context.newPage();
         console.log('Подключение прошло успешно! Направляемся по ссылкам...');
 
-        //Получаем информацию по товарам
         let scrapedProduct;
 
         if (currentProduct.url.includes('wildberries')) {
@@ -70,7 +40,7 @@ export async function GET() {
         const updatedPriceHistory = [
           ...currentProduct.priceHistory,
           { price: scrapedProduct.currentPrice }
-        ];
+        ];  
 
         const product = {
           ...scrapedProduct,
@@ -80,7 +50,6 @@ export async function GET() {
           averagePrice: getAveragePrice(updatedPriceHistory),
         };
 
-        //Обновляем товары в БД
         const updatedProduct = await Product.findOneAndUpdate(
           { url: product.url },
           product
@@ -97,11 +66,9 @@ export async function GET() {
             title: updatedProduct.title,
             url: updatedProduct.url,
           };
-          // Создаем содержимое сообщения
+
           const emailContent = await generateEmailBody(productInfo, emailNotifType);
-          // Получаем массив пользователей для рассылки
           const userEmails = updatedProduct.users.map((user: any) => user.email);
-          // Рассылаем email-оповещения
           await sendEmail(emailContent, userEmails);
         }
 

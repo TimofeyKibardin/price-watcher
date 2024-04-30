@@ -25,7 +25,6 @@ export type Product = {
   category: string;
   reviewsCount: number;
   stars: number;
-  isOutOfStock: Boolean;
   users?: User[];
   articleNumber: string;
   sellerName: string;

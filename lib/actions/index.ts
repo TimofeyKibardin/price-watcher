@@ -15,26 +15,6 @@ export async function scrapeAndStoreProduct(productUrl: string) {
   //Подключение к базе данных
   connectToDB();
 
-  //Конфигурация прокси
-  // const username = String(process.env.BRIGHT_DATA_USERNAME);
-  // const password = String(process.env.BRIGHT_DATA_PASSWORD);
-  // const port = 9222;
-  // const sessionID = (1000000 * Math.random()) | 0;
-  // const options = {
-  //   auth: {
-  //     username: `${username}-session-${sessionID}`,
-  //     password
-  //   },
-  //   host: "brd.superproxy.io",
-  //   port,
-  //   rejectUnauthorized: false
-  // }
-
-  //Открываем подключение к браузеру
-  // console.log('Подключение к браузеру...');
-  // const SBR_CDP = `wss://${options.auth.username}:${options.auth.password}@${options.host}:${options.port}`;
-  // const browser = await pw.chromium.connectOverCDP(SBR_CDP);
-
   //Открываем подключение к браузеру
   console.log('Подключение к браузеру...');
   const browser = await pw.chromium.launch({ headless: true });
@@ -50,7 +30,7 @@ export async function scrapeAndStoreProduct(productUrl: string) {
     if (productUrl.includes('wildberries')) {
       scrapedProduct = await scrapeWildberriesProduct(productUrl, page);
     } else if (productUrl.includes('kazanexpress')) {
-      scrapedProduct = await scrapeKazanexpressProduct(productUrl, page);
+      scrapedProduct = await scrapeKazanexpressProduct(productUrl);
     }
 
     await page.close();

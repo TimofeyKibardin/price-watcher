@@ -1,33 +1,28 @@
-import HeroCarousel from "@/components/HeroCarousel"
 import Searchbar from "@/components/SearchBar"
 import { getAllProducts } from "@/lib/actions"
 import ProductCard from "@/components/ProductCard"
 import { revalidatePath } from "next/cache";
 
 const Home = async () => {
-  // cron.schedule('* * * * *', function() {
-  //   console.log('running a task every minute');
-  // });
   let allProducts = await getAllProducts();
   revalidatePath('/');
 
   return (
     <>
-      <section className="px-6 md:px-20 py-24">
+      <section className="px-6 md:px-20 py-3">
         <div className="flex max-xl:flex-col gap-16">
           <div className="flex flex-col justify-center"> 
             <h1 className="head-text">
-              Экономьте вместе с нами
+              Начните экономить сегодня
             </h1>
             <Searchbar />
           </div>
-          {/* <HeroCarousel /> */}
         </div>
       </section>
 
       <section className="trending-section">
         <div className="flex flex-wrap gap-x-8">
-          <h2 className="section-text">Отслеживаемые товары</h2>
+          <h2 className="section-text">Отслеживаемые <span className="text-blue-600">товары</span></h2>
         </div>
         
         <div className="flex flex-wrap gap-x-8 gap-y-16">
