@@ -12,25 +12,21 @@ import { generateEmailBody, sendEmail } from "../nodemailer";
 export async function scrapeAndStoreProduct(productUrl: string) {
   if(!productUrl) return;
 
-  //Подключение к базе данных
   connectToDB();
 
-  //Открываем подключение к браузеру
   console.log('Подключение к браузеру...');
   const browser = await pw.chromium.launch({ headless: true });
   const context = await browser.newContext();
 
   try {
-    //Открываем страницу
-    // const page = await browser.newPage();
     const page = await context.newPage();
     console.log('Подключение прошло успешно! Направляемся по ссылке...');
     let scrapedProduct;
 
-    if (productUrl.includes('wildberries')) {
+    if (productUrl.includes('wildberries')) { 
       scrapedProduct = await scrapeWildberriesProduct(productUrl, page);
     } else if (productUrl.includes('kazanexpress')) {
-      scrapedProduct = await scrapeKazanexpressProduct(productUrl);
+      scrapedProduct = await scrapeKazanexpressProduct(productUrl, page);
     }
 
     await page.close();

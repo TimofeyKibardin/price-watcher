@@ -99,10 +99,10 @@ const ProductDetails = async ({ params: { id } }: Props) => {
           <div className="product-info">
             <div className="flex flex-row gap-4">
               <p className="text-[30px] text-secondary font-bold">
-                {product.currency} {formatNumber(product.currentPrice)}
+              {formatNumber(product.currentPrice)} {product.currency}
               </p>
               <p className="text-[18px] text-black opacity-50 line-through">
-                {product.currency} {formatNumber(product.originalPrice)}
+              {formatNumber(product.originalPrice)} {product.currency}
               </p>
             </div>
           </div>

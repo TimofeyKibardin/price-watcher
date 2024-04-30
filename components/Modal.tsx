@@ -1,8 +1,8 @@
 "use client"
 
+import Image from 'next/image'
 import { FormEvent, Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import Image from 'next/image'
 import { addUserEmailToProduct } from '@/lib/actions'
 
 interface Props {

@@ -1,7 +1,6 @@
 "use server"
 
 import { extractPrice, percentage } from '../utils';
-import pw from 'playwright';
 
 export async function scrapeWildberriesProduct(url: string, page: any) {
   if (!url) return;
@@ -20,11 +19,10 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
         const stars = article.querySelector('.product-page .product-page__common-info .product-review__rating')?.textContent;
         const reviewsCount = article.querySelector('.product-page .product-page__common-info .product-review__count-review')?.textContent;
         const category = article.querySelector('.breadcrumbs li:nth-child(3) .breadcrumbs__link')?.textContent;
-        const description = article.querySelector('p .option__text')?.textContent;
         const image = article.querySelector('.product-page .photo-zoom__preview')?.getAttribute('src');
         const articleNumber = article.querySelector('#productNmId')?.textContent;
         const sellerName = article.querySelector('.seller-info__name')?.textContent;
-        return { title, currentPrice, originalPrice, stars, reviewsCount, category, description, image, articleNumber, sellerName };
+        return { title, currentPrice, originalPrice, stars, reviewsCount, category, image, articleNumber, sellerName };
       });
     });
 
@@ -34,7 +32,6 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
     const stars = allArticles[0].stars?.trim();
     const reviewsCount = allArticles[0].reviewsCount?.trim().replace(/[\D]+/g, '');
     const category = allArticles[0].category?.trim();
-    const description = allArticles[0].description;
     const image = allArticles.length > 0 ? allArticles[0].image : null;
     const articleNumber = allArticles[0].articleNumber;
     const sellerName = allArticles[0].sellerName?.trim();
@@ -55,7 +52,6 @@ export async function scrapeWildberriesProduct(url: string, page: any) {
       category: String(category),
       reviewsCount: Number(reviewsCount || 0),
       stars: Number(stars || 0),
-      description: String(description),
       lowestPrice: Number(currentPrice) || Number(originalPrice),
       highestPrice: Number(originalPrice) || Number(currentPrice),
       averagePrice: Number(currentPrice) || Number(originalPrice),
@@ -74,11 +70,8 @@ export async function scrapeKazanexpressProduct(url: string, page: any) {
   if(!url) return;
   try {
     console.log('Подключение прошло успешно! Перенаправление на новую страницу Kazanexpress');
-    const browser = await pw.chromium.launch({ headless: true });
-    const context = await browser.newContext();
-    const page = await context.newPage();
     await page.goto(url);
-    // await sleep(2000);
+    
     const body = await page.waitForSelector('h1');
     console.log('Перенаправились! Скрейпинг в процессе...');
 
@@ -122,8 +115,6 @@ export async function scrapeKazanexpressProduct(url: string, page: any) {
       category: 'отсутствует',
       reviewsCount: Number(reviewsCount || 0),
       stars: Number(stars || 0),
-      isOutOfStock: false,
-      description: 'отсутствует',
       lowestPrice: Number(currentPrice) || Number(originalPrice),
       highestPrice: Number(originalPrice) || Number(currentPrice),
       averagePrice: Number(currentPrice) || Number(originalPrice),
