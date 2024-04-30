@@ -81,7 +81,6 @@ export async function scrapeKazanexpressProduct(url: string) {
     await page.goto(url);
     // await sleep(2000);
     const body = await page.waitForSelector('h1');
-    await page.screenshot({ path: 'screenshot.png', fullPage: true });
     console.log('Перенаправились! Скрейпинг в процессе...');
 
     const content = await page.content();
