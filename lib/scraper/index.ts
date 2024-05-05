@@ -77,8 +77,6 @@ export async function scrapeKazanexpressProduct(url: string, page: any) {
 
     const content = await page.content();
 
-    console.log(content);
-
     var scriptJSON = content.slice(content.indexOf('+json">'), content.indexOf('/script></div>'));
     scriptJSON = scriptJSON.slice(7, scriptJSON.length - 1);
     var scriptJS = JSON.parse(scriptJSON);
@@ -125,7 +123,7 @@ export async function scrapeKazanexpressProduct(url: string, page: any) {
     return data;
 
   } catch (error: any) {
-    console.log(error);
+    throw new Error(`Ошибка скрейпинга товара: ${error.message}`);
   }
 
   function sleep(ms: number) {

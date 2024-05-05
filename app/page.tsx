@@ -2,10 +2,15 @@ import Searchbar from "@/components/SearchBar"
 import { getAllProducts } from "@/lib/actions"
 import ProductCard from "@/components/ProductCard"
 import { revalidatePath } from "next/cache";
+import { cronJob } from "@/lib/actions/cronJob";
+
+
 
 const Home = async () => {
   let allProducts = await getAllProducts();
   revalidatePath('/');
+
+  cronJob.start();
 
   return (
     <>
