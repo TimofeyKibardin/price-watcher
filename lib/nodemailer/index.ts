@@ -30,7 +30,7 @@ export async function generateEmailBody(
         <div>
           <h2>Пользователь, Добро Пожаловать!</h2>
           <p>Название отслеживаемого товара ${product.title}</p>
-          <p>Ссылка на отслеживаемый товар: <a href="${product.url}" target="_blank" rel="noopener noreferrer">here</a></p>
+          <p>Ссылка на отслеживаемый товар: <a href="${product.url}" target="_blank" rel="noopener noreferrer">ссылка</a></p>
         </div>
       `;
       break;
@@ -40,7 +40,7 @@ export async function generateEmailBody(
       body = `
         <div>
           <p>Привет! На ${product.title} зафиксирована самая низкая цена</p>
-          <p>Перейти к карточке товара: <a href="${product.url}" target="_blank" rel="noopener noreferrer">here</a></p>
+          <p>Перейти к карточке товара: <a href="${product.url}" target="_blank" rel="noopener noreferrer">ссылка</a></p>
         </div>
       `;
       break;
@@ -50,7 +50,7 @@ export async function generateEmailBody(
       body = `
         <div>
           <p>Привет! На ${product.title} зафиксирована скидка более ${THRESHOLD_PERCENTAGE}%</p>
-          <p>Перейти к карточке товара: <a href="${product.url}" target="_blank" rel="noopener noreferrer">here</a></p>
+          <p>Перейти к карточке товара: <a href="${product.url}" target="_blank" rel="noopener noreferrer">ссылка</a></p>
         </div>
       `;
       break;
