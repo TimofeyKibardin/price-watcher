@@ -1,9 +1,9 @@
 import Searchbar from "@/components/SearchBar"
-import { getAllProducts } from "@/lib/actions"
 import ProductCard from "@/components/ProductCard"
+import ExportExcelButton from '@/components/ExportExcelButton'
+import { getAllProducts } from "@/lib/actions"
 import { revalidatePath } from "next/cache";
 import { cronJob } from "@/lib/actions/cronJob";
-
 
 
 const Home = async () => {
@@ -28,6 +28,7 @@ const Home = async () => {
       <section className="trending-section">
         <div className="flex flex-wrap gap-x-8">
           <h2 className="section-text">Отслеживаемые <span className="text-blue-600">товары</span></h2>
+          <ExportExcelButton />
         </div>
         
         <div className="flex flex-wrap gap-x-8 gap-y-16">

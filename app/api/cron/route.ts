@@ -17,7 +17,6 @@ export async function GET() {
     console.log("Обновление информации о товарах");
     const products = await Product.find({});
     if (!products) throw new Error("Не получили товары");
-    console.log('Количество товаров: ' + products.length);
 
     //1. Проходим по сохраненным товарам и обновляем базу данных
     const productsToUpdate = await Promise.all(
