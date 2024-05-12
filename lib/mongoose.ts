@@ -7,7 +7,7 @@ export const connectToDB = async () => {
 
   if(!process.env.MONGODB_URI) return console.log('MONGODB_URI не определен');
 
-  if(isConnected) return console.log('=> подключение к базе данных');
+  if(isConnected) return console.log('Подключение к базе данных');
 
   try {
     await mongoose.connect(process.env.MONGODB_URI);
