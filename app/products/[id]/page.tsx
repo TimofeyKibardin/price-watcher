@@ -60,7 +60,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 
               <div className="product-like_count">
                 <Image 
-                  src="/assets/icons/red-heart.svg"
+                  src="/assets/icons/heart.svg"
                   alt="heart"
                   width={20}
                   height={20}
