@@ -4,7 +4,7 @@ import { GET } from '@/app/api/cron/route';
 let cronLock = false;
 
 export const cronJob = new CronJob(
-	'0 0 */2 * * *',
+	'0 0 */4 * * *',
 	function() {
 		console.log('cronLock: ' + cronLock);
 		if (cronLock) return;
